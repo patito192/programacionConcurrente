@@ -1,8 +1,26 @@
 import java.util.Arrays;
-public class NReinasTodas {
-    public static final int N=10;
+
+public class EjemploNReinasTodas {
+
+//public class EjemploNReinasTodas implements Runnable {
+
+  public static final int N=10;
+
+  /*static int N = 10;
+  static int soluciones;
+  private int[] tablero = null;
+  private ReentrantLock candado;*/
     
-    public static boolean esComida(int[][] tablero, int r, int c){
+  // Constructor
+  /*ReinasHilos(int columna, ReentrantLock candado) {
+    tablero = new int[N];
+    tablero[0] = columna;
+    this.candado = candado;
+
+  }*/
+
+  // Modificar para que no reciba tablero y manejar un arreglo en lugar de una matriz
+  public static boolean esComida(int[][] tablero, int r, int c){
     
     int auxR,auxC;
     
@@ -37,7 +55,7 @@ public class NReinasTodas {
     
   }
   
-
+  // Modificar para que no reciba tablero y manejar un arreglo en lugar de una matriz
   public static int backtrackReinas(int[][] tablero, int r){
       int c;
       int soluciones=0;
@@ -57,6 +75,18 @@ public class NReinasTodas {
        return soluciones;
   }
 
+  /*@Override
+  public void run() {
+
+    candado.lock();
+    
+    // Inicio Seccion Critica
+    soluciones += backtrackReinas(1);
+    // Fin Seccion Critica
+    
+    candado.unlock();
+  }*/
+
   public static void main(String[] arg){
     
     int[][] tablero = new int[N][N];
@@ -64,7 +94,14 @@ public class NReinasTodas {
     total=backtrackReinas(tablero,0);
     System.out.println("Tablero "+N+" Reinas Soluciones "+total);
 
-             
+
+    // Crear los hilos con Runnable y lanzarlos
+    // trabajadores[i] = new Thread(new ReinasHilos(i, candado));
+    // trabajadores[i].start();
+
+    // Esperar a los hilos
+    // trabajadores[i].join();
+
      
   }
 }
