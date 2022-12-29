@@ -1,5 +1,5 @@
 import java.util.Arrays;
-public class NReinasTodas {
+public class EjemploNReinasTodas {
     public static final int N=10;
     
     public static boolean esComida(int[][] tablero, int r, int c){
@@ -58,6 +58,9 @@ public class NReinasTodas {
   }
 
   public static void main(String[] arg){
+
+    System.out.println(arg[0]+" "+arg[1]);    
+    
     
     int[][] tablero = new int[N][N];
     int total;        
