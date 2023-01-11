@@ -38,7 +38,7 @@ class productor implements Runnable{
 
 			//Se crea el Dato
 			Dato[0] = r.nextInt(100);
-			System.out.println("\nSoy el productor " + id + " y creo: " + Dato[0]);
+			System.out.println("Soy el productor " + id + " y creo: " + Dato[0]);
 
 			//Aviso al consumidor que ya puede consumir (Liberar a consumidor)
 			SemaphoreConsumidor.release();

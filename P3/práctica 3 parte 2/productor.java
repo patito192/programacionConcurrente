@@ -7,14 +7,15 @@ import java.util.Random;
 class productor implements Runnable{ 
 
 	//Declaraciones
+	private int id;
 	private int[] Dato;
 	private ReentrantLock candado; 
 	private Semaphore SemaphoreProductor;
 	private Semaphore SemaphoreConsumidor;
 
-	public productor(ReentrantLock candado, int[] Dato, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) 
-	{ 
+	public productor(int id, ReentrantLock candado, int[] Dato, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
 		//Asignación a valores de argumentos
+		this.id = id;
 		this.candado = candado; 
 		this.Dato = Dato;
 		this.SemaphoreProductor = SemaphoreProductor;
@@ -36,7 +37,7 @@ class productor implements Runnable{
 
 			//Se crea el Dato
 			Dato[0] = r.nextInt(100);
-			System.out.println("soy el productor y el dato: "+Dato[0]);
+			System.out.println("Soy el productor " + id + " y creo: " + Dato[0]);
 
 			//Aviso al consumidor que ya puede consumir (Liberar a consumidor)
 			SemaphoreConsumidor.release();

@@ -32,10 +32,22 @@ class consumidor implements Runnable{
 					exception.printStackTrace();
 			}
 
-			//Aquí un candado proteginedo dato
+			//Aquí un candado protegiendo dato
+			/*
+			try{
 
 			//Se crea el Dato
-			System.out.println("Soy el consumidor " + id + " y consumo: " + Dato[0]);
+			System.out.println("soy el consumidor y el dato: "+Dato[0]+'\n');
+			Dato[0] = -1;
+	        }
+
+	        catch(Exception e){
+	            e.printStackTrace();
+	        }
+	        */
+
+			//Se crea el Dato
+			System.out.println("Soy el consumidor " + id + " y consumo: " + Dato[0] + '\n');
 			Dato[0] = -1;
 
 			//Aviso al productor que ya puede producir (Liberar a productor)

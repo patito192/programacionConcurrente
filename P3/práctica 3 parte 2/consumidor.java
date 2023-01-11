@@ -6,14 +6,15 @@ import java.util.concurrent.Semaphore;
 class consumidor implements Runnable{ 
 
 	//Declaraciones
+	private int id;
 	private int[] Dato;
 	private ReentrantLock candado; 
 	private Semaphore SemaphoreProductor;
 	private Semaphore SemaphoreConsumidor;
 
-	public consumidor(ReentrantLock candado, int[] Dato, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) 
-	{ 
+	public consumidor(int id, ReentrantLock candado, int[] Dato, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
 		//Asignación a valores de argumentos
+		this.id = id;
 		this.candado = candado; 
 		this.Dato = Dato;
 		this.SemaphoreConsumidor = SemaphoreConsumidor;
@@ -30,7 +31,7 @@ class consumidor implements Runnable{
 					exception.printStackTrace();
 			}
 
-			//Aquí un candado proteginedo dato
+			//Aquí un candado protegiendo dato
 			/*
 			try{
 
@@ -42,14 +43,10 @@ class consumidor implements Runnable{
 	        catch(Exception e){
 	            e.printStackTrace();
 	        }
-	        
-	        finally{
-	            reentrantlock.unlock();
-	        }
 	        */
 	        
 			//Se crea el Dato
-			System.out.println("soy el consumidor y el dato: "+Dato[0]+'\n');
+			System.out.println("Soy el consumidor " + id + " y consumo: " + Dato[0] + '\n');
 			Dato[0] = -1;
 
 
