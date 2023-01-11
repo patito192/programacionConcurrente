@@ -7,19 +7,20 @@ class consumidor implements Runnable{
 
 	//Declaraciones
 	private int id;
-	private int[] Dato;
-	private ReentrantLock candado; 
+	private int[] almacen;
+	private ReentrantLock candadoConsumidor = new ReentrantLock();
 	private Semaphore SemaphoreProductor;
 	private Semaphore SemaphoreConsumidor;
 
-	public consumidor(int id, ReentrantLock candado, int[] Dato, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
+	public consumidor(int id, eentrantLock candadoConsumidor, int[] almacen, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
 		//Asignación a valores de argumentos
 		this.id = id;
-		this.candado = candado; 
-		this.Dato = Dato;
+		this.candadoConsumidor = candadoConsumidor;
+		this.almacen = almacen;
 		this.SemaphoreConsumidor = SemaphoreConsumidor;
 		this.SemaphoreProductor = SemaphoreProductor;
 	} 
+
 	public void run(){
 		for (int i=0; i<10; i++) {
 
@@ -31,24 +32,18 @@ class consumidor implements Runnable{
 					exception.printStackTrace();
 			}
 
-			//Aquí un candado protegiendo dato
-			/*
-			try{
-
-			//Se crea el Dato
-			System.out.println("soy el consumidor y el dato: "+Dato[0]+'\n');
-			Dato[0] = -1;
-	        }
-
-	        catch(Exception e){
-	            e.printStackTrace();
-	        }
-	        */
 	        
-			//Se crea el Dato
-			System.out.println("Soy el consumidor " + id + " y consumo: " + Dato[0] + '\n');
-			Dato[0] = -1;
+	        //EMPIEZA SECCIÓN CRÍTICA
+			candadoConsumidor.lock();
 
+			//Se crea el almacen
+			System.out.println("Soy el consumidor " + id + " y consumo: " + almacen[producto.salida] + '\n');
+			
+			almacen[producto.salida] = -1;
+			producto.salida = (producto.salida + 1) % 1;
+
+			//TERMINA SECCIÓN CRÍTICA
+			candadoConsumidor.unlock();
 
 
 			//Aviso al productor que ya puede producir (Liberar a productor)

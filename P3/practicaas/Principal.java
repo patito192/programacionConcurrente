@@ -10,7 +10,8 @@ public class Principal{
 	public static void main(String[] args){ 
 
 		//Cración de valores de sincronización
-		ReentrantLock candado = new ReentrantLock();
+		ReentrantLock candadoUno = new ReentrantLock();
+		ReentrantLock candadoDos = new ReentrantLock();
 		Semaphore SemaphoreProductor = new Semaphore(1); //Tamaño almacén
 		Semaphore SemaphoreConsumidor = new Semaphore(0);
 		
