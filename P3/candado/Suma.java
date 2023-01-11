@@ -1,8 +1,8 @@
-package mx.uam.pc.candado;
+//package mx.uam.pc.candado;
 
 class Suma implements Runnable{ 
-	static final int N=200000;
-	static int suma=0;
+	static final int N = 200000;
+	static int suma = 0;
 	private String nombre; 
 
 	public Suma(String n) 
@@ -10,15 +10,14 @@ class Suma implements Runnable{
 		
 		nombre = n; 
 	} 
-	public void run() 
-	{ 
-		System.out.println("Hilo: "+nombre);
-		for(int i=0;i<N;i++)
-		{ 
-			
-				suma++;
 
+
+	public void run(){ 
+
+		System.out.println("Hilo: "+nombre);
+
+		for(int i=0;i<N;i++){
+			suma++; // Región crítica
 		} 
-		
 	} 
 } 

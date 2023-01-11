@@ -1,4 +1,4 @@
-package mx.uam.pc.candado;
+//package mx.uam.pc.candado;
 
 import java.util.concurrent.locks.ReentrantLock; 
 
@@ -6,13 +6,13 @@ public class Principal{
 	static final int MAX_T = 4; 
 	public static void main(String[] args) 
 	{ 
-		ReentrantLock rel = new ReentrantLock(); 
-
+		ReentrantLock rel = new ReentrantLock();
+		
 		Thread[] t = new Thread[MAX_T];
 		
 		
 		for(int i=0;i<MAX_T;i++) {
-			t[i]=  new Thread(new Suma("T"+i));
+			t[i]=  new Thread(new Suma("T"+i)); // T0
 			t[i].start();
 		}
 		
@@ -30,7 +30,6 @@ public class Principal{
 		
 		
 		for(int i=0;i<MAX_T;i++) {
-
 			t[i]=  new Thread(new SumaConcurrente(rel, "T"+i));
 			t[i].start();
 		}
@@ -47,8 +46,6 @@ public class Principal{
 		}
 		
 		System.out.println("Resultado final con sincronizacion:"+SumaConcurrente.suma);
-		
-
 		
 	} 
 } 
