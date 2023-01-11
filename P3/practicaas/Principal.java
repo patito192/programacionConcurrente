@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 
 public class Principal{ 
 	//Declaraciones
-	static final int MAX_productores = 1;
+	static final int MAX_productores = 2;
 	static final int MAX_consumidores = 1;
 	public static void main(String[] args){ 
 
@@ -22,13 +22,13 @@ public class Principal{
 		
 		//Creación de Productores y su ejecución
 		for(int i=0;i<MAX_productores;i++) {
-			productores[i] = new Thread(new productor(candado, Dato, SemaphoreProductor, SemaphoreConsumidor)); // productores0
+			productores[i] = new Thread(new productor(i, candado, Dato, SemaphoreProductor, SemaphoreConsumidor)); // productores0
 			productores[i].start();
 		}
 
 		//Creación de Cosumidores y su ejecución
 		for(int i=0;i<MAX_consumidores;i++) {
-			consumidores[i]=  new Thread(new consumidor(candado, Dato, SemaphoreProductor, SemaphoreConsumidor)); // consumidores0
+			consumidores[i]=  new Thread(new consumidor(i, candado, Dato, SemaphoreProductor, SemaphoreConsumidor)); // consumidores0
 			consumidores[i].start();
 		}
 
