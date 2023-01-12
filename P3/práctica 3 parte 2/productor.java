@@ -4,6 +4,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Semaphore;
 import java.util.Random;
 
+//import producto;
+
 class productor implements Runnable{ 
 
 	//Declaraciones
@@ -16,8 +18,8 @@ class productor implements Runnable{
 	public productor(int id, ReentrantLock candadoProductor, int[] almacen, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
 		//Asignación a valores de argumentos
 		this.id = id;
+		this.almacen = almacen;
 		this.candadoProductor = candadoProductor;
-		this.Dato = Dato;
 		this.SemaphoreProductor = SemaphoreProductor;
 		this.SemaphoreConsumidor = SemaphoreConsumidor;
 	} 
@@ -25,7 +27,7 @@ class productor implements Runnable{
 		//Random
 		Random r = new Random();
 
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<31; i++) {
 
 			//Evitar un error para el semáforo
 			try {
@@ -36,19 +38,20 @@ class productor implements Runnable{
 			}
 
 
-			//EMPIEZA SECCIÓN CRÍTICA
+			//EMPIEZA SECCIÓN 
 			candadoProductor.lock();
 
 
 			
 			//Se crea el almancen
-			almacen[producto.entrada;] = r.nextInt(100);
-			System.out.println("Soy el productor " + id + " y creo: " + almacen[0]);
+			System.out.println("Entrada:" + almacen[producto.entrada]);
+			almacen[producto.entrada] = r.nextInt(100);
+			System.out.println("Soy el productor " + id + " y creo: " + almacen[producto.entrada]);
 
-			producto.entrada = (producto.entrada + 1)%1
+			producto.entrada = (producto.entrada + 1) % almacen.length;
 
 			candadoProductor.unlock();
-			//TERMINA SECCIÓN CRÍTICA
+			//TERMINA SECCIÓN 
 
 			//Aviso al consumidor que ya puede consumir (Liberar a consumidor)
 			SemaphoreConsumidor.release();

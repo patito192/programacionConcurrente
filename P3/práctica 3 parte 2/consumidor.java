@@ -3,6 +3,8 @@
 import java.util.concurrent.locks.ReentrantLock; 
 import java.util.concurrent.Semaphore;
 
+//import producto;
+
 class consumidor implements Runnable{ 
 
 	//Declaraciones
@@ -12,7 +14,7 @@ class consumidor implements Runnable{
 	private Semaphore SemaphoreProductor;
 	private Semaphore SemaphoreConsumidor;
 
-	public consumidor(int id, eentrantLock candadoConsumidor, int[] almacen, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
+	public consumidor(int id, ReentrantLock candadoConsumidor, int[] almacen, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
 		//Asignación a valores de argumentos
 		this.id = id;
 		this.candadoConsumidor = candadoConsumidor;
@@ -22,7 +24,7 @@ class consumidor implements Runnable{
 	} 
 
 	public void run(){
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<50; i++) {
 
 			//Evitar un error para el semáforo
 			try {
@@ -33,16 +35,16 @@ class consumidor implements Runnable{
 			}
 
 	        
-	        //EMPIEZA SECCIÓN CRÍTICA
+	        //EMPIEZA SECCIÓN 
 			candadoConsumidor.lock();
 
 			//Se crea el almacen
 			System.out.println("Soy el consumidor " + id + " y consumo: " + almacen[producto.salida] + '\n');
 			
 			almacen[producto.salida] = -1;
-			producto.salida = (producto.salida + 1) % 1;
+			producto.salida = (producto.salida + 1) % almacen.length;
 
-			//TERMINA SECCIÓN CRÍTICA
+			//TERMINA SECCIÓN 
 			candadoConsumidor.unlock();
 
 
