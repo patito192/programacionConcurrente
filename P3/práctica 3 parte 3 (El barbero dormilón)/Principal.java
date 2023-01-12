@@ -16,7 +16,8 @@ public class Principal{
 
 	public static void main(String[] args){ 
 
-		while () {
+		//for (barbero)
+		for (int i; i<silla_barbero; i++) {
 
 			//Wait para clientes
 			for(int i=0;i<MAX_clientes;i++){
@@ -55,7 +56,6 @@ public class Principal{
 			//EMPIEZA SECCIÓN CRÍTICA
 			rasurando.lock();
 
-			
 
 			//TERMINA SECCIÓN CRÍTICA
 			silla_barbero.unlock();
