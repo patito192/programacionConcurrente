@@ -1,20 +1,12 @@
-//package mx.uam.pc.candado;
-
-
-
-class producto implements Runnable{ 
+public class producto{ 
 
 	//Declaraciones
 	public static int entrada;
 	public static int salida;
 
+	//Constructor
 	public producto() { 
-
-		//Constructor Entrada
 		entrada = 0;
-
-		//Constructor Salida
-		salida = 0;
-		
+		salida = 0;		
 	} 
 } 
