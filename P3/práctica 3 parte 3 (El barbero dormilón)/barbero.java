@@ -5,53 +5,48 @@ import java.util.concurrent.Semaphore;
 import java.util.Random;
 
 class barbero implements Runnable{ 
-
 	//Declaraciones
-	private int id;
-	private int[] almacen;
-	private ReentrantLock candadobarbero;
-	private Semaphore Semaphorebarbero;
-	private Semaphore SemaphoreConsumidor;
+	/*CANDADOS*/
+	/* (Q)
+	private ReentrantLock candadoDespertando;
+	private ReentrantLock candadoRasurando;*/
 
-	public barbero(int id, ReentrantLock candadobarbero, int[] almacen, Semaphore Semaphorebarbero, Semaphore SemaphoreConsumidor) { 
-		//Asignación a valores de argumentos
-		this.id = id;
-		this.candadobarbero = candadobarbero;
-		this.Dato = Dato;
-		this.Semaphorebarbero = Semaphorebarbero;
-		this.SemaphoreConsumidor = SemaphoreConsumidor;
-	} 
+	//Semeforos (A)
+	Semaphore SemaphoreDespertando;
+	Semaphore SemaphoreRasurando;
+
+	//Constructor (Q)
+	/*
+	public barbero(ReentrantLock candadoDespertando, ReentrantLock candadoRasurando) { 
+		this.candadoDespertando = candadoDespertando;
+		this.candadoRasurando = candadoRasurando;
+	}*/
+
+	//Constructor
+	public barbero(Semaphore SemaphoreDespertando, Semaphore SemaphoreRasurando) { 
+		this.SemaphoreDespertando = SemaphoreDespertando;
+		this.SemaphoreRasurando = SemaphoreRasurando;
+	}
+
+	
 	public void run(){ 
-		//Random
-		Random r = new Random();
+		//candadoDespertando.lock(); (Q)
+		SemaphoreDespertando.acquire();
 
-		for (int i=0; i<10; i++) {
+		//seccion critica
+		System.out.println("Cortando");
 
-			//Evitar un error para el semáforo
-			try {
-					Semaphorebarbero.acquire();//Wait
-				} 
-				catch (InterruptedException exception) {
-					exception.printStackTrace();
-			}
+		//candadoRasurando.unlock(); (Q)
+		SemaphoreRasurando.release();
+	
 
 
-			//EMPIEZA SECCIÓN CRÍTICA
-			candadobarbero.lock();
+
+	for (int i = 0; i < 2; i++) {
+		
+	}
 
 
-			
-			//Se crea el almancen
-			almacen[producto.entrada;] = r.nextInt(100);
-			System.out.println("Soy el barbero " + id + " y creo: " + almacen[0]);
-
-			producto.entrada = (producto.entrada + 1)%1
-
-			candadobarbero.unlock();
-			//TERMINA SECCIÓN CRÍTICA
-
-			//Aviso al consumidor que ya puede consumir (Liberar a consumidor)
-			SemaphoreConsumidor.release();
-		}
+	 
 	}
 } 

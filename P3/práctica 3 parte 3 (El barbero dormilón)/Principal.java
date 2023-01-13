@@ -3,122 +3,53 @@
 import java.util.concurrent.locks.ReentrantLock; 
 import java.util.concurrent.Semaphore;
 
+
 public class Principal{ 
 	//Declaraciones
-	static final int MAX_barbero = 1;
-	static final int MAX_clientes = 1;
+	static final int MAX_BARBERO = 1;
+	static final int MAX_CLIENTES = 2;
+	static final int SILLAS_CLIENTES = 1;
 
-	static final int silla_barbero = 1;
-	static final int sillas_clientes = N;
+	//(A)
+	static final int SILLA_BARBERO = 1;
+	static final int DESPERTANDO = 0;
+	static final int RASURANDO = 0;
 
-	static final int despertando = 0;
-	static final int rasurando = 0;
+	
 
 	public static void main(String[] args){ 
 
-		//for (barbero)
-		for (int i; i<silla_barbero; i++) {
+		//INICIO DE LA SECCION CRITICA
+		//Candados(Q)
+		/*
+		ReentrantLock candadoSilla_barbero = new ReentrantLock(true);
+		ReentrantLock candadoDespertando = new ReentrantLock(false);
+		ReentrantLock candadoRasurando = new ReentrantLock(false);*/
 
-			//Wait para clientes
-			for(int i=0;i<MAX_clientes;i++){
+		//Semeforos (A)
+		Semaphore SemaphoreSilla_barbero = new Semaphore(SILLA_BARBERO);
+		Semaphore SemaphoreDespertando = new Semaphore(DESPERTANDO);
+		Semaphore SemaphoreRasurando = new Semaphore(RASURANDO);
 
-				try {
-					clientes[i].join();
-
-				} catch (InterruptedException e) {
-
-					System.out.println("Error: en la espera del hilo");
-				}
-			}
-
+		Semaphore SemaphoreSillas_clientes = new Semaphore(SILLAS_CLIENTES);
 
 
 
-			//EMPIEZA SECCIÓN CRÍTICA
-			candadoSilla_barbero.lock();
-
-			//Se crean las sillas_clientes
-			System.out.println("Soy el barbero " + id + " y las sillas: " + candadoSilla_barbero[producto.salida] + '\n');
-			
-			candadoSilla_barbero[producto.salida] = -1;
-			//Pendiente
-			producto.salida = (producto.salida + 1) % 1;
-
-			//Aviso a cliente que ya puede pasar (Liberar silla)
-			SemaphoreSillas_clientes.release();
-
-			//TERMINA SECCIÓN CRÍTICA
-			despertando.unlock();
+		//Thread hiloBarbero = new Thread(new barbero(candadoDespertando, candadoRasurando));
+		Thread hiloBarbero = new Thread(new barbero(SemaphoreDespertando, SemaphoreRasurando));
+		Thread[] hilosClientes = new Thread[MAX_CLIENTES];
 
 
-
-
-			//EMPIEZA SECCIÓN CRÍTICA
-			rasurando.lock();
-
-
-			//TERMINA SECCIÓN CRÍTICA
-			silla_barbero.unlock();
-			
-
-
-
-
-
-
-
+		//Creación de clientes y su ejecución
+		for(int i=0;i<MAX_CLIENTES;i++) {
+			//hilosClientes[i] = new Thread(new clientes(SemaphoreSillas_clientes, candadoSilla_barbero, candadoRasurando, candadoDespertando)); // hilosClientes0
+			hilosClientes[i] = new Thread(new clientes(SemaphoreSillas_clientes, SemaphoreSilla_barbero, SemaphoreRasurando, SemaphoreDespertando)); // hilosClientes0
+			hilosClientes[i].start();
 		}
 
 
-
-			//Cración de valores de sincronización
-
-		//Candados
-		ReentrantLock candadoSilla_barbero = new ReentrantLock();
-		ReentrantLock candadoSillas_clientes = new ReentrantLock();
-		//Semáforos
-		Semaphore SemaphoreSilla_barbero = new Semaphore(1); //Tamaño de la silla
-		Semaphore SemaphoreSillas_clientes = new Semaphore(0);
-		//Variable almacén para productos
-		int[] almacen = new	int[1];
-
-		producto p = new producto();
-		
-		//Inizialización de v1alores de sincronización
-
-		Thread[] productores = new Thread[MAX_productores];
-		Thread[] clientes = new Thread[MAX_clientes];
-
-		
-		//Creación de Productores y su ejecución
-		for(int i=0;i<MAX_productores;i++) {
-			productores[i] = new Thread(new productor(candadoProductor, almacen, SemaphoreProductor, SemaphoreSillas_clientes)); // productores0
-			productores[i].start();
-		}
-
-		//Creación de Cosumidores y su ejecución
-		for(int i=0;i<MAX_clientes;i++) {
-			clientes[i]=  new Thread(new consumidor(candadoSillas_clientes, almacen, SemaphoreProductor, SemaphoreSillas_clientes)); // clientes0
-			clientes[i].start();
-		}
+		hiloBarbero.start();
 
 
-		//Wait para productores
-		for(int i=0;i<MAX_productores;i++){
-
-			try {
-				productores[i].join();
-
-			} catch (InterruptedException e) {
-
-				System.out.println("Error: en la espera del hilo");
-			}
-		}
-
-		
-
-		//Fin programa
-		System.out.println("Termina programa");
-		
 	} 
 }

@@ -6,91 +6,70 @@ import java.util.concurrent.Semaphore;
 class clientes implements Runnable{ 
 
 	//Declaraciones
-	private int id;
-	private int[] sillas_clientes;
-	private ReentrantLock candadoClientes = new ReentrantLock();
-	private Semaphore SemaphoreBarbero;
-	private Semaphore SemaphoreClientes;
+	/*CANDADOS*/
+	/*
+	private ReentrantLock candadoSilla_barbero;
+	private ReentrantLock candadoDespertando;
+	private ReentrantLock candadoRasurando;*/
 
-	public clientes(int id, eentrantLock candadoClientes, int[] sillas_clientes, Semaphore SemaphoreProductor, Semaphore SemaphoreConsumidor) { 
-		//Asignación a valores de argumentos
-		this.id = id;
-		this.candadoClientes = candadoClientes;
-		this.sillas_clientes = sillas_clientes;
-		this.SemaphoreConsumidor = SemaphoreConsumidor;
-		this.SemaphoreProductor = SemaphoreProductor;
-	} 
+	//Semeforos (A)
+	Semaphore SemaphoreSilla_barbero;
+	Semaphore SemaphoreDespertando;
+	Semaphore SemaphoreRasurando;
+	//Semáforos
+	Semaphore SemaphoreSillas_clientes; //Tamaño de sillas
+
+
+					//Semaphore SemaphoreSillas_clientes, ReentrantLock candadoSilla_barbero, ReentrantLock candadoRasurando, ReentrantLock candadoDespertando
+	public clientes(Semaphore SemaphoreSillas_clientes, Semaphore SemaphoreSilla_barbero, Semaphore SemaphoreRasurando, Semaphore SemaphoreDespertando) { 
+		//Asignación a valores de argumentos (Constructor)
+
+		//Asignacion candados (Q)
+		/*
+		this.candadoSilla_barbero = candadoSilla_barbero;
+		this.candadoRasurando = candadoRasurando;
+		this.candadoDespertando = candadoDespertando;*/
+
+		//Asignacion semaforos (A)
+		this.SemaphoreSilla_barbero = SemaphoreSilla_barbero;
+		this.SemaphoreRasurando = SemaphoreRasurando;
+		this.SemaphoreDespertando = SemaphoreDespertando;
+
+		//Asignacion semaforos
+		this.SemaphoreSillas_clientes = SemaphoreSillas_clientes;
+	}
 
 	public void run(){
-		for (int i=0; i<10; i++) {
 
-			//Evitar un error para el semáforo
+
+		for (int i = 0; i < 1; i++) {
+			//Create WAIT
 			try {
-					SemaphoreConsumidor.acquire();//Wait
-				} 
-				catch (InterruptedException exception) {
-					exception.printStackTrace();
+				SemaphoreSillas_clientes.acquire();
+
+			} catch (InterruptedException e) {
+
+				System.out.println("Error: en la espera del hilo");
 			}
 
+			//candadoSilla_barbero.lock(); (Q)
+			SemaphoreSilla_barbero.acquire();
 
-			while () {
-
-			//Wait para clientes
-			for(int i=0;i<MAX_clientes;i++){
-
-				try {
-					clientes[i].join();
-
-				} catch (InterruptedException e) {
-
-					System.out.println("Error: en la espera del hilo");
-				}
-			}
-
-
-
-
-			//EMPIEZA SECCIÓN CRÍTICA
-			despertando.lock();
-
-			//Se crean las sillas_clientes
-			System.out.println("Soy el barbero " + id + " y las sillas: " + candadoSilla_barbero[producto.salida] + '\n');
-			
-			candadoSilla_barbero[producto.salida] = -1;
-			//Pendiente
-			producto.salida = (producto.salida + 1) % 1;
-
-			//Aviso a cliente que ya puede pasar (Liberar silla)
+			//Aviso al consumidor que ya puede consumir (Liberar a consumidor)
 			SemaphoreSillas_clientes.release();
 
-			//TERMINA SECCIÓN CRÍTICA
-			rasurando.unlock();
-			
+			//candadoDespertando.unlock(); (Q)
+			SemaphoreDespertando.release();
 
+			//candadoRasurando.lock(); (Q)
+			SemaphoreRasurando.acquire();
 
-
-
-
-
-
+			//candadoSilla_barbero.unlock(); (Q)
+			SemaphoreSilla_barbero.release();
 		}
 
-	        
-	        //EMPIEZA SECCIÓN CRÍTICA
-			candadoClientes.lock();
-
-			//Se crean las sillas_clientes
-			System.out.println("Soy el consumidor " + id + " y consumo: " + sillas_clientes[producto.salida] + '\n');
-			
-			sillas_clientes[producto.salida] = -1;
-			producto.salida = (producto.salida + 1) % 1;
-
-			//TERMINA SECCIÓN CRÍTICA
-			candadoClientes.unlock();
 
 
-			//Aviso al productor que ya puede producir (Liberar a productor)
-			SemaphoreProductor.release();
-		}
+		System.out.println("Soy el cliente :p");
 	} 
 } 
