@@ -1,20 +1,20 @@
 import java.util.Arrays;
-<<<<<<< HEAD
-public class EjemploNReinasTodas {
-    public static final int N=10;
-=======
 
 public class EjemploNReinasTodas {
+    public static final int N=10;
+
+
+
+
 
 //public class EjemploNReinasTodas implements Runnable {
 
-  public static final int N=10;
 
   /*static int N = 10;
   static int soluciones;
   private int[] tablero = null;
   private ReentrantLock candado;*/
->>>>>>> 0a457238cb7b212b5e8a1c9fbdfa32d50af8a38b
+
     
   // Constructor
   /*ReinasHilos(int columna, ReentrantLock candado) {
@@ -92,7 +92,9 @@ public class EjemploNReinasTodas {
     candado.unlock();
   }*/
 
-  public static void main(String[] arg){
+  public static void main(String[] args){
+
+    
 
     System.out.println(arg[0]+" "+arg[1]);    
     
